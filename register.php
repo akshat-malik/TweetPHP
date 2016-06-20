@@ -62,17 +62,50 @@ h3{
 </div>
 <div class="input-group input group-lg">
 <span class="input-group-addon">ChooseTwitterId</span>
-<input type="text" name="twitid" class="form-control" placeholder="ChooseTwitId" required/>
+<input type="text" name="twitid" class="form-control" placeholder="ChooseTwitId" required onchange="checkuser(this.value)"/><span id="helper"></span>
 
 </div>
 <div class="input-group input-group-lg">
 <span class="input-group-addon">Choose Password</span>
-<input type="password" name="upass" class="form-control" placeholder="Enter Password"/><span class="input-group-addon btn btn-primary" onmousedown="h.upass.type='text'"onmouseup="h.upass.type='password'"><!--<span onmousedown="h.upass.type='text'"onmouseup="h.upass.type='password'">--><span class="glyphicon glyphicon-eye-open"></span></span>
+<input type="password" name="upass" class="form-control" placeholder="Enter Password" required/><span class="input-group-addon btn btn-primary" onmousedown="h.upass.type='text'"onmouseup="h.upass.type='password'"><!--<span onmousedown="h.upass.type='text'"onmouseup="h.upass.type='password'">--><span class="glyphicon glyphicon-eye-open"></span></span>
 </div>
-<center><input type="submit" class="btn btn-primary btn-lg" value="Register" name="button2" required/> </center>
+<center><input type="submit" class="btn btn-primary btn-lg" value="Register" name="button2" required id="sub"/> </center>
 </form>
 </div>
 </div>
 </div>
+<script>
+function checkuser(valu)
+{
+	if(valu.length==0)
+	{
+		document.getElementById('helper').innerHTML="";
+		document.getElementById("helper").className="";
+		return;
+	}
+	else
+	{
+		var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if(xmlhttp.responseText==1)
+                {document.getElementById("helper").className="glyphicon glyphicon-ok btn btn-success";
+					document.getElementById("helper").innerHTML =" Available!";
+					document.getElementById('sub').disabled=false;
+				}
+				else
+				{
+					document.getElementById("helper").className="glyphicon glyphicon-remove btn btn-danger";
+					document.getElementById("helper").innerHTML ="NotAvailable";
+					document.getElementById('sub').disabled=true;
+				}
+            }
+        };
+        xmlhttp.open("GET", "chk.php?q=" + valu, true);
+        xmlhttp.send();
+	}
+}
+
+</script>
 </body>
 </html>
